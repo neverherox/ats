@@ -1,0 +1,7 @@
+D:\projects\epam\ats\ats\bin\Debug\ats.exe.config
+D:\projects\epam\ats\ats\bin\Debug\ats.exe
+D:\projects\epam\ats\ats\bin\Debug\ats.pdb
+D:\projects\epam\ats\ats\obj\Debug\ats.csprojAssemblyReference.cache
+D:\projects\epam\ats\ats\obj\Debug\ats.csproj.CoreCompileInputs.cache
+D:\projects\epam\ats\ats\obj\Debug\ats.exe
+D:\projects\epam\ats\ats\obj\Debug\ats.pdb
