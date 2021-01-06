@@ -1,15 +1,17 @@
 ﻿using ats.ats.Contracts;
 using ats.ATS;
 using ats.BillingSys.Controllers;
+using ats.BillingSys.Contracts;
+using ats.BillingSys.Controllers.Contracts;
 using System.Linq;
 
 
 namespace ats.BillingSys
 {
-    public class BillingSystem
+    public class BillingSystem : IBillingSystem
     {
-        private ClientController clientController;
-        private CallController callController;
+        private IClientController clientController;
+        private ICallController callController;
 
         public BillingSystem()
         {
@@ -22,7 +24,7 @@ namespace ats.BillingSys
             station.CallHappened += OnCallHappened;
         }
         
-        public void RegisterClient(Client client)
+        public void RegisterClient(IClient client)
         {
             clientController.Add(client);
         }
@@ -35,15 +37,32 @@ namespace ats.BillingSys
                 From = clientController.GetClientByPhoneNumber(callInfo.From),
             });
         }
-        public Report CreateReport(Client client)
+        public IReport CreateReport(IClient client)
         {
             var clientCalls = callController.GetClientCalls(client);
             foreach(var call in clientCalls)
             {
                 call.Cost = call.CallInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0;
             }
-            Report report = new Report(clientCalls.ToList());
+            IReport report = new Report(clientCalls.ToList());
             return report;
+        }
+
+        public void SortCallsByDate(IReport report)
+        {
+            report.Calls = report.Calls.OrderBy(x => x.CallInfo.CallDate).ToList();
+        }
+        public void SortCallsByCost(IReport report)
+        {
+            report.Calls = report.Calls.OrderBy(x => x.Cost).ToList();
+        }
+        public void SortCallsByIncomingClient(IReport report)
+        {
+            report.Calls = report.Calls.OrderBy(x => x.From.Name).ToList();
+        }
+        public void SortCallsByOutgoingClient(IReport report)
+        {
+            report.Calls = report.Calls.OrderBy(x => x.To.Name).ToList();
         }
     }
 }

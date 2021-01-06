@@ -89,9 +89,15 @@ namespace ats
             if (call != null)
             {
                 call.Duration = DateTime.Now - call.CallDate;
-                phone.IncomingCallPhoneNumber = string.Empty;
+                callController.Remove(call);
+                var callerPort = portController.GetPortByPhoneNumber(phone.IncomingCallPhoneNumber);
+                callerPort.PortState = PortState.Free;
+            }
+            if (phone.Port.PortState == PortState.Busy)
+            {
                 phone.Port.PortState = PortState.Free;
             }
+            phone.IncomingCallPhoneNumber = string.Empty;
         }
         private void OnOutgoingCallDrop(object sender, EventArgs args)
         {
@@ -100,9 +106,15 @@ namespace ats
             if (call != null)
             {
                 call.Duration = DateTime.Now - call.CallDate;
-                phone.OutgoingCallPhoneNumber = string.Empty;
+                callController.Remove(call);
+                var answererPort = portController.GetPortByPhoneNumber(phone.OutgoingCallPhoneNumber);
+                answererPort.PortState = PortState.Free;
+            }
+            if (phone.Port.PortState == PortState.Busy)
+            {
                 phone.Port.PortState = PortState.Free;
             }
+            phone.OutgoingCallPhoneNumber = string.Empty;
         }
         protected virtual void OnCallHappened(object sender, CallInfo callInfo)
         {

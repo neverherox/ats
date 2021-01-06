@@ -1,13 +1,12 @@
-﻿using ats.BillingSys;
-using System;
+﻿using ats.BillingSys.Contracts;
+using ats.BillingSys.Controllers.Contracts;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ats.BillingSys.Controllers
 {
-    public class CallController
+    public class CallController : ICallController
     {
         private ICollection<ExtendedCallInfo> calls;
         public CallController()
@@ -21,7 +20,7 @@ namespace ats.BillingSys.Controllers
                 calls.Add(call);
             }
         }
-        public ICollection<ExtendedCallInfo> GetClientCalls(Client client)
+        public ICollection<ExtendedCallInfo> GetClientCalls(IClient client)
         {
             return calls.Where(x => x.To.Equals(client) || x.From.Equals(client)).ToList();
         }

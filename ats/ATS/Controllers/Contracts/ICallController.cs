@@ -4,9 +4,8 @@ namespace ats.ATS.Contracts
 {
     public interface ICallController
     {
-        ICollection<CallInfo> Calls { get; }
-
         void AddCall(CallInfo processedCall);
+        void Remove(CallInfo call);
 
         CallInfo GetCall(string from, string to);
     }

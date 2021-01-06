@@ -1,25 +1,26 @@
-﻿using ats.BillingSys;
+﻿using ats.BillingSys.Contracts;
+using ats.BillingSys.Controllers.Contracts;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ats.BillingSys.Controllers
 {
-    public class ClientController
+    public class ClientController : IClientController
     {
-        private ICollection<Client> clients;
+        private ICollection<IClient> clients;
         public ClientController()
         {
-            clients = new List<Client>();
+            clients = new List<IClient>();
         }
 
-        public void Add(Client client)
+        public void Add(IClient client)
         {
             if (client != null)
             {
                 clients.Add(client);
             }
         }
-        public Client GetClientByPhoneNumber(string phoneNumber)
+        public IClient GetClientByPhoneNumber(string phoneNumber)
         {
             return clients.Where(x => x.Phone.PhoneNumber.Equals(phoneNumber)).FirstOrDefault();
         }

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ats.BillingSys.Contracts;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ats.BillingSys
 {
-    public class Report
+    public class Report : IReport
     {
         private ICollection<ExtendedCallInfo> calls;
+        public ICollection<ExtendedCallInfo> Calls { get => calls.ToList(); set => calls = value; }
+
         public Report()
         {
             calls = new List<ExtendedCallInfo>();
