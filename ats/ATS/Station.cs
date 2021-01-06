@@ -23,15 +23,14 @@ namespace ats
             phoneController = new PhoneController();
         }
 
-        public IPhone CreatePhone(string phoneNumber)
+        public void RegisterPhone(IPhone phone)
         {
-            IPhone phone = phoneController.CreatePhone(phoneNumber);
+            phoneController.Add(phone);
             IPort port = portController.CreatePort();
             portController.MapPhoneToPort(phone, port);
 
             RegisterPortEventHandlers(port);
             RegisterPhoneEventHandlers(phone);
-            return phone;
         }
 
         public virtual void RegisterPhoneEventHandlers(IPhone phone)
@@ -39,6 +38,8 @@ namespace ats
             phone.OutgoingCall += OnOutgoingCall;
             phone.Answer += OnIncomingCallAnswer;
             phone.Drop += OnIncomingCallDrop;
+            phone.Drop += OnOutgoingCallDrop;
+
         }
         public virtual void RegisterPortEventHandlers(IPort port)
         {
@@ -58,7 +59,7 @@ namespace ats
                 if (port.PortState == PortState.Free)
                 {
                     answerer.IncomingCallFrom(caller.PhoneNumber);
-                    CallInfo processedCall = new CallInfo
+                    CallInfo unprocessedCall = new CallInfo
                     {
                         From = answerer.IncomingCallPhoneNumber,
                         To = answerer.PhoneNumber,
@@ -66,8 +67,8 @@ namespace ats
                         Duration = TimeSpan.Zero,
                         CallState = CallState.Unprocessed
                     };
-                    callController.AddCall(processedCall);
-                    OnCallHappened(this, processedCall);
+                    callController.AddCall(unprocessedCall);
+                    OnCallHappened(this, unprocessedCall);
                 }
             }
         }
@@ -84,13 +85,24 @@ namespace ats
         private void OnIncomingCallDrop(object sender, EventArgs args)
         {
             var phone = sender as IPhone;
-            CallInfo processedCall = callController.GetCall(phone.IncomingCallPhoneNumber, phone.PhoneNumber);
-            if (processedCall != null)
+            CallInfo call = callController.GetCall(phone.IncomingCallPhoneNumber, phone.PhoneNumber);
+            if (call != null)
             {
-                processedCall.Duration = DateTime.Now - processedCall.CallDate;
+                call.Duration = DateTime.Now - call.CallDate;
+                phone.IncomingCallPhoneNumber = string.Empty;
+                phone.Port.PortState = PortState.Free;
             }
-            phone.IncomingCallPhoneNumber = string.Empty;
-            phone.Port.PortState = PortState.Free;
+        }
+        private void OnOutgoingCallDrop(object sender, EventArgs args)
+        {
+            var phone = sender as IPhone;
+            CallInfo call = callController.GetCall(phone.PhoneNumber, phone.OutgoingCallPhoneNumber);
+            if (call != null)
+            {
+                call.Duration = DateTime.Now - call.CallDate;
+                phone.OutgoingCallPhoneNumber = string.Empty;
+                phone.Port.PortState = PortState.Free;
+            }
         }
         protected virtual void OnCallHappened(object sender, CallInfo callInfo)
         {

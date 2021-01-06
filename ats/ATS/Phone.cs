@@ -8,9 +8,9 @@ namespace ats
     public class Phone : IPhone
     {
         public IPort Port { get; set; }
-
         public string PhoneNumber { get; set; }
         public string IncomingCallPhoneNumber { get; set; }
+        public string OutgoingCallPhoneNumber { get; set; }
 
         public event EventHandler<string> OutgoingCall;
         public event EventHandler<string> IncomingCall;
@@ -29,12 +29,10 @@ namespace ats
         {
             Answer.Invoke(this, args);
         }
-
         protected virtual void OnDropCall(object sender, EventArgs args)
         {
             Drop.Invoke(this, args);
         }
-
         public void Call(string to)
         {
             if (Port.PortState == PortState.Free)

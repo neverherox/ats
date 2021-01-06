@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ats.BillingSystem
+﻿using ats.ATS;
+namespace ats.BillingSys
 {
     public class ExtendedCallInfo
     {
+        public double Cost { get; set; }
+
+        public Client To { get; set; }
+
+        public Client From { get; set; }
+
+        public CallInfo CallInfo { get; set; }
     }
 }

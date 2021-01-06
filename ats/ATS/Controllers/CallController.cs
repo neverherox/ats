@@ -7,14 +7,11 @@ namespace ats.ATS.Controllers
     public class CallController : ICallController
     {
         private ICollection<CallInfo> calls;
-
         public CallController()
         {
             calls = new List<CallInfo>();
         }
-
         public ICollection<CallInfo> Calls { get => calls.ToList(); }
-
         public void AddCall(CallInfo processedCall)
         {
             calls.Add(processedCall);

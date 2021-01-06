@@ -4,7 +4,8 @@ namespace ats.ATS.Controllers.Contracts
 {
     public interface IPhoneController
     {
-        IPhone CreatePhone(string phoneNumber);
+        void Add(IPhone phone);
+
         IPhone GetPhoneByPhoneNumber(string phoneNumber);
     }
 }

@@ -6,6 +6,7 @@ namespace ats.ats.Contracts
     {
         string PhoneNumber { get; }
         string IncomingCallPhoneNumber { get; set; }
+        string OutgoingCallPhoneNumber { get; set; }
         IPort Port { get; set; }
 
         event EventHandler<string> OutgoingCall;

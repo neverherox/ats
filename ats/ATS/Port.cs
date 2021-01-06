@@ -19,15 +19,15 @@ namespace ats
             set
             {
                 portState = value;
-                StateChanged?.Invoke(this, null);
+                OnStateChanged(this, null);
             }
         }
-
         public virtual void RegisterEventHandlersForPphone(IPhone phone)
         {
             phone.OutgoingCall += (sender, to) =>
             {
                 var caller = sender as IPhone;
+                caller.OutgoingCallPhoneNumber = to;
                 PortState = PortState.Busy;
                 Console.WriteLine(caller.PhoneNumber + " trying  to call " + to);
             };
@@ -39,6 +39,9 @@ namespace ats
                 Console.WriteLine(from + " is calling " + answerer.PhoneNumber);
             };
         }
-
+        protected virtual void OnStateChanged(object sender, EventArgs args)
+        {
+            StateChanged?.Invoke(sender, args);
+        }
     }
 }

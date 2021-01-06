@@ -6,6 +6,6 @@ namespace ats.ats.Contracts
     public interface IStation
     {
         event EventHandler<CallInfo> CallHappened;
-        IPhone CreatePhone(string phoneNumber);
+        void RegisterPhone(IPhone phone);
     }
 }

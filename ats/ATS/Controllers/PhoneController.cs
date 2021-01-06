@@ -13,11 +13,12 @@ namespace ats.ATS.Controllers
         {
             phones = new List<IPhone>();
         }
-        public IPhone CreatePhone(string phoneNumber)
+        public void Add(IPhone phone)
         {
-            IPhone phone = new Phone { PhoneNumber = phoneNumber};
-            phones.Add(phone);
-            return phone;
+            if (phone != null)
+            {
+                phones.Add(phone);
+            }
         }
         public IPhone GetPhoneByPhoneNumber(string phoneNumber)
         {
