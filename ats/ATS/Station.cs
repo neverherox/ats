@@ -45,7 +45,7 @@ namespace ats
         {
             port.StateChanged += (sender, EventArgs) =>
             {
-                Console.WriteLine("Port detected the State is changed to " + port.PortState);
+                Console.WriteLine("Port detected the State is changed to " + port.State);
             };
         }
 
@@ -56,7 +56,7 @@ namespace ats
             var caller = sender as IPhone;
             if (port != null && answerer != null)
             {
-                if (port.PortState == PortState.Free)
+                if (port.State == PortState.Free)
                 {
                     answerer.IncomingCallFrom(caller.PhoneNumber);
                     CallInfo unprocessedCall = new CallInfo
@@ -91,11 +91,11 @@ namespace ats
                 call.Duration = DateTime.Now - call.CallDate;
                 callController.Remove(call);
                 var callerPort = portController.GetPortByPhoneNumber(phone.IncomingCallPhoneNumber);
-                callerPort.PortState = PortState.Free;
+                callerPort.State = PortState.Free;
             }
-            if (phone.Port.PortState == PortState.Busy)
+            if (phone.Port.State == PortState.Busy)
             {
-                phone.Port.PortState = PortState.Free;
+                phone.Port.State = PortState.Free;
             }
             phone.IncomingCallPhoneNumber = string.Empty;
         }
@@ -108,14 +108,15 @@ namespace ats
                 call.Duration = DateTime.Now - call.CallDate;
                 callController.Remove(call);
                 var answererPort = portController.GetPortByPhoneNumber(phone.OutgoingCallPhoneNumber);
-                answererPort.PortState = PortState.Free;
+                answererPort.State = PortState.Free;
             }
-            if (phone.Port.PortState == PortState.Busy)
+            if (phone.Port.State == PortState.Busy)
             {
-                phone.Port.PortState = PortState.Free;
+                phone.Port.State = PortState.Free;
             }
             phone.OutgoingCallPhoneNumber = string.Empty;
         }
+
         protected virtual void OnCallHappened(object sender, CallInfo callInfo)
         {
             CallHappened?.Invoke(sender, callInfo);

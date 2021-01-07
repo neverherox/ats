@@ -1,5 +1,6 @@
 ﻿using ats.ats;
 using ats.ats.Contracts;
+using ats.ATS.States;
 using System;
 
 
@@ -17,6 +18,11 @@ namespace ats
         public event EventHandler Answer;
         public event EventHandler Drop;
 
+        public Phone()
+        {
+            IncomingCallPhoneNumber = string.Empty;
+            OutgoingCallPhoneNumber = string.Empty;
+        }
         protected virtual void OnOutgoingCall(object sender, string to)
         {
             OutgoingCall?.Invoke(this, to);
@@ -27,15 +33,16 @@ namespace ats
         }
         protected virtual void OnAnswerCall(object sender, EventArgs args)
         {
-            Answer.Invoke(this, args);
+            Answer?.Invoke(this, args);
         }
         protected virtual void OnDropCall(object sender, EventArgs args)
         {
-            Drop.Invoke(this, args);
+            Drop?.Invoke(this, args);
         }
+
         public void Call(string to)
         {
-            if (Port.PortState == PortState.Free)
+            if (Port.State == PortState.Free)
             {
                 OnOutgoingCall(this, to);
             }
@@ -46,17 +53,15 @@ namespace ats
         }
         public void AnswerCall()
         {
-            if (Port.PortState == PortState.Busy && IncomingCallPhoneNumber != string.Empty)
+            if (IncomingCallPhoneNumber != string.Empty)
             {
                 OnAnswerCall(this, null);
             }
         }
         public void DropCall()
         {
-            if (Port.PortState == PortState.Busy)
-            {
-                OnDropCall(this, null);
-            }
+            OnDropCall(this, null);
         }
+
     }
 }

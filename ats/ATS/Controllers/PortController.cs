@@ -33,7 +33,7 @@ namespace ats.ATS.Controllers
         public IPort CreatePort()
         {
             IPort port = new Port();
-            port.PortState = PortState.Free;
+            port.State = PortState.Free;
             return port;
         }
     }

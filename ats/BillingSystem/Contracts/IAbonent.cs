@@ -2,7 +2,7 @@
 
 namespace ats.BillingSys.Contracts
 {
-    public interface IClient
+    public interface IAbonent
     {
         string Name { get; }
         IPhone Phone { get; }

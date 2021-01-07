@@ -1,24 +1,23 @@
 ﻿using ats.ats;
 using ats.ats.Contracts;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using ats.ATS.States;
 
 namespace ats
 {
     public class Port : IPort
     {
-        private PortState portState;
+        private PortState state;
         public event EventHandler StateChanged;
-        public PortState PortState
+        public PortState State
         {
             get
             {
-                return portState;
+                return state;
             }
             set
             {
-                portState = value;
+                state = value;
                 OnStateChanged(this, null);
             }
         }
@@ -26,17 +25,15 @@ namespace ats
         {
             phone.OutgoingCall += (sender, to) =>
             {
-                var caller = sender as IPhone;
-                caller.OutgoingCallPhoneNumber = to;
-                PortState = PortState.Busy;
-                Console.WriteLine(caller.PhoneNumber + " trying  to call " + to);
+                phone.OutgoingCallPhoneNumber = to;
+                State = PortState.Busy;
+                Console.WriteLine(phone.PhoneNumber + " trying  to call " + to);
             };
             phone.IncomingCall += (sender, from) =>
             {
-                var answerer = sender as IPhone;
-                answerer.IncomingCallPhoneNumber = from;
-                PortState = PortState.Busy;
-                Console.WriteLine(from + " is calling " + answerer.PhoneNumber);
+                phone.IncomingCallPhoneNumber = from;
+                State = PortState.Busy;
+                Console.WriteLine(from + " is calling " + phone.PhoneNumber);
             };
         }
         protected virtual void OnStateChanged(object sender, EventArgs args)

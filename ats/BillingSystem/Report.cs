@@ -8,26 +8,12 @@ namespace ats.BillingSys
     public class Report : IReport
     {
         private ICollection<ExtendedCallInfo> calls;
-        public ICollection<ExtendedCallInfo> Calls { get => calls.ToList(); set => calls = value; }
+        private ICollection<ExtendedCallInfo> incomingCalls;
+        private ICollection<ExtendedCallInfo> outgoingCalls;
 
-        public Report()
-        {
-            calls = new List<ExtendedCallInfo>();
-        }
-        public Report(ICollection<ExtendedCallInfo> calls)
-        {
-            this.calls = calls;
-        }
-        public void Remove(ExtendedCallInfo call)
-        {
-            if (call != null)
-            {
-                calls.Remove(call);
-            }
-        }
-        public void Clear()
-        {
-            calls.Clear();
-        }
+        public ICollection<ExtendedCallInfo> Calls { get => calls.ToList(); set => calls = value; }
+        public ICollection<ExtendedCallInfo> IncomingCalls { get => incomingCalls.ToList(); set => incomingCalls = value; }
+        public ICollection<ExtendedCallInfo> OutgoingCalls { get => outgoingCalls.ToList(); set => outgoingCalls = value; }
+
     }
 }

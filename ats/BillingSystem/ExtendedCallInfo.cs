@@ -7,9 +7,9 @@ namespace ats.BillingSys
     {
         public double Cost { get; set; }
 
-        public IClient To { get; set; }
+        public IAbonent To { get; set; }
 
-        public IClient From { get; set; }
+        public IAbonent From { get; set; }
 
         public CallInfo CallInfo { get; set; }
     }

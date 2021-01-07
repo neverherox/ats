@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ats.ATS.States;
+using System;
 
 namespace ats.ats.Contracts
 {
@@ -16,6 +17,7 @@ namespace ats.ats.Contracts
         event EventHandler Answer;
 
         event EventHandler Drop;
+
         void Call(string to);
         void IncomingCallFrom(string from);
         void AnswerCall();

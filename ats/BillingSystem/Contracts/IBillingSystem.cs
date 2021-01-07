@@ -7,11 +7,11 @@ namespace ats.BillingSys.Contracts
     public interface IBillingSystem
     {
         void RegisterStationEventHandlers(IStation station);
-        void RegisterClient(IClient client);
-        IReport CreateReport(IClient client);
+        void RegisterAbonent(IAbonent abonent);
+        IReport CreateReport(IAbonent abonent);
         void SortCallsByDate(IReport report);
         void SortCallsByCost(IReport report);
-        void SortCallsByIncomingClient(IReport report);
-        void SortCallsByOutgoingClient(IReport report);
+        void SortCallsByIncomingAbonent(IReport report);
+        void SortCallsByOutgoingAbonent(IReport report);
     }
 }

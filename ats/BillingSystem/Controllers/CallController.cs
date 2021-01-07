@@ -20,9 +20,17 @@ namespace ats.BillingSys.Controllers
                 calls.Add(call);
             }
         }
-        public ICollection<ExtendedCallInfo> GetClientCalls(IClient client)
+        public ICollection<ExtendedCallInfo> GetAbonentCalls(IAbonent abonent)
         {
-            return calls.Where(x => x.To.Equals(client) || x.From.Equals(client)).ToList();
+            return calls.Where(x => x.To.Equals(abonent) || x.From.Equals(abonent)).ToList();
+        }
+        public ICollection<ExtendedCallInfo> GetIncomingCalls(IAbonent abonent)
+        {
+            return calls.Where(x => x.To.Equals(abonent)).ToList();
+        }
+        public ICollection<ExtendedCallInfo> GetOutgoingCalls(IAbonent abonent)
+        {
+            return calls.Where(x => x.From.Equals(abonent)).ToList();
         }
     }
 }

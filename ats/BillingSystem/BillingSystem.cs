@@ -10,12 +10,12 @@ namespace ats.BillingSys
 {
     public class BillingSystem : IBillingSystem
     {
-        private IClientController clientController;
+        private IAbonentController abonentController;
         private ICallController callController;
 
         public BillingSystem()
         {
-            clientController = new ClientController();
+            abonentController = new AbonentController();
             callController = new CallController();
             Tariff.CostPerMinute = 0.3;
         }
@@ -24,27 +24,29 @@ namespace ats.BillingSys
             station.CallHappened += OnCallHappened;
         }
         
-        public void RegisterClient(IClient client)
+        public void RegisterAbonent(IAbonent abonent)
         {
-            clientController.Add(client);
+            abonentController.Add(abonent);
         }
         private void OnCallHappened(object sender, CallInfo callInfo)
         {
             callController.Add(new ExtendedCallInfo
             {
                 CallInfo = callInfo,
-                To = clientController.GetClientByPhoneNumber(callInfo.To),
-                From = clientController.GetClientByPhoneNumber(callInfo.From),
+                To = abonentController.GetAbonentByPhoneNumber(callInfo.To),
+                From = abonentController.GetAbonentByPhoneNumber(callInfo.From),
             });
         }
-        public IReport CreateReport(IClient client)
+        public IReport CreateReport(IAbonent abonent)
         {
-            var clientCalls = callController.GetClientCalls(client);
-            foreach(var call in clientCalls)
+            IReport report = new Report();
+            report.Calls = callController.GetAbonentCalls(abonent);
+            report.IncomingCalls = callController.GetIncomingCalls(abonent);
+            report.OutgoingCalls = callController.GetOutgoingCalls(abonent);
+            foreach(var call in report.Calls)
             {
                 call.Cost = call.CallInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0;
             }
-            IReport report = new Report(clientCalls.ToList());
             return report;
         }
 
@@ -56,11 +58,11 @@ namespace ats.BillingSys
         {
             report.Calls = report.Calls.OrderBy(x => x.Cost).ToList();
         }
-        public void SortCallsByIncomingClient(IReport report)
+        public void SortCallsByIncomingAbonent(IReport report)
         {
             report.Calls = report.Calls.OrderBy(x => x.From.Name).ToList();
         }
-        public void SortCallsByOutgoingClient(IReport report)
+        public void SortCallsByOutgoingAbonent(IReport report)
         {
             report.Calls = report.Calls.OrderBy(x => x.To.Name).ToList();
         }

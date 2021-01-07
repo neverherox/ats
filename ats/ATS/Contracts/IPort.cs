@@ -5,7 +5,7 @@ namespace ats.ats.Contracts
 {
     public interface IPort
     {
-        PortState PortState { get; set; }
+        PortState State { get; set; }
 
         event EventHandler StateChanged;
         void RegisterEventHandlersForPphone(IPhone phone);

@@ -17,60 +17,63 @@ namespace ats
             IPhone phone1 = new Phone { PhoneNumber = "111111111111111" };
             IPhone phone2 = new Phone { PhoneNumber = "222222222222222" };
             IPhone phone3 = new Phone { PhoneNumber = "333333333333333" };
+            IPhone phone4 = new Phone { PhoneNumber = "444444444444444" };
             station.RegisterPhone(phone1);
             station.RegisterPhone(phone2);
             station.RegisterPhone(phone3);
+            station.RegisterPhone(phone4);
 
 
-            IClient caller1 = new Client { Name = "A", Phone = phone1 };
-            IClient caller2 = new Client { Name = "B", Phone = phone2 };
-            IClient answerer = new Client { Name = "C", Phone = phone3 };
-            billingSystem.RegisterClient(caller1);
-            billingSystem.RegisterClient(caller2);
-            billingSystem.RegisterClient(answerer);
+            IAbonent caller1 = new Abonent { Name = "A", Phone = phone1 };
+            IAbonent caller2 = new Abonent { Name = "B", Phone = phone2 };
+            IAbonent caller3 = new Abonent { Name = "C", Phone = phone3 };
+            IAbonent caller4 = new Abonent { Name = "D", Phone = phone4 };
+            billingSystem.RegisterAbonent(caller1);
+            billingSystem.RegisterAbonent(caller2);
+            billingSystem.RegisterAbonent(caller3);
+            billingSystem.RegisterAbonent(caller4);
 
 
-            caller1.Phone.Call(answerer.Phone.PhoneNumber);
-            answerer.Phone.AnswerCall();
+            caller1.Phone.Call(caller3.Phone.PhoneNumber);
+            caller3.Phone.AnswerCall();
             Thread.Sleep(1000);
-            caller1.Phone.DropCall();
-            answerer.Phone.DropCall();
-
-
-            caller1.Phone.Call(answerer.Phone.PhoneNumber);
-            answerer.Phone.AnswerCall();
+           
+            caller2.Phone.Call(caller4.Phone.PhoneNumber);
+            caller4.Phone.AnswerCall();
             Thread.Sleep(1500);
-            caller1.Phone.DropCall();
-            answerer.Phone.DropCall();
 
-            answerer.Phone.Call(caller1.Phone.PhoneNumber);
-            caller1.Phone.AnswerCall();
-            Thread.Sleep(2000);
             caller1.Phone.DropCall();
-            answerer.Phone.DropCall();
-
-            caller2.Phone.Call(answerer.Phone.PhoneNumber);
-            answerer.Phone.AnswerCall();
-            Thread.Sleep(3000);
             caller2.Phone.DropCall();
-            answerer.Phone.DropCall();
+            caller3.Phone.DropCall();
+            caller4.Phone.DropCall();
 
-            caller2.Phone.Call(answerer.Phone.PhoneNumber);
+            caller1.Phone.Call(caller2.Phone.PhoneNumber);
+            caller2.Phone.AnswerCall();
+            Thread.Sleep(1000);
+
+            caller3.Phone.Call(caller4.Phone.PhoneNumber);
+            caller4.Phone.AnswerCall();
+            Thread.Sleep(1500);
+
+            caller1.Phone.DropCall();
+            caller2.Phone.DropCall();
+            caller3.Phone.DropCall();
+            caller4.Phone.DropCall();
+
+            caller2.Phone.Call(caller3.Phone.PhoneNumber);
             Thread.Sleep(500);
             caller2.Phone.DropCall();
 
-            caller2.Phone.Call(answerer.Phone.PhoneNumber);
+            caller2.Phone.Call(caller3.Phone.PhoneNumber);
             Thread.Sleep(500);
-            answerer.Phone.DropCall();
+            caller3.Phone.DropCall();
 
-            IReport caller1Report = billingSystem.CreateReport(caller1);
-            IReport caller2Report = billingSystem.CreateReport(caller2);
-            IReport answererReport = billingSystem.CreateReport(answerer);
+           
 
-            billingSystem.SortCallsByDate(caller1Report);
-            billingSystem.SortCallsByDate(caller2Report);
-            billingSystem.SortCallsByDate(answererReport);
-
+            IReport report1 = billingSystem.CreateReport(caller1);
+            IReport report2 = billingSystem.CreateReport(caller2);
+            IReport report3 = billingSystem.CreateReport(caller3);
+            IReport report4 = billingSystem.CreateReport(caller4);
 
             Console.ReadKey(); 
         }

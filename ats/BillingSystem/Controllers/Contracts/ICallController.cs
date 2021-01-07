@@ -8,6 +8,8 @@ namespace ats.BillingSys.Controllers.Contracts
     {
         void Add(ExtendedCallInfo call);
 
-        ICollection<ExtendedCallInfo> GetClientCalls(IClient client);
+        ICollection<ExtendedCallInfo> GetAbonentCalls(IAbonent abonent);
+        ICollection<ExtendedCallInfo> GetIncomingCalls(IAbonent abonent);
+        ICollection<ExtendedCallInfo> GetOutgoingCalls(IAbonent abonent);
     }
 }
