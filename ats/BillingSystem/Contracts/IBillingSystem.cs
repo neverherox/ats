@@ -11,7 +11,7 @@ namespace ats.BillingSys.Contracts
         IReport CreateReport(IAbonent abonent);
         void SortCallsByDate(IReport report);
         void SortCallsByCost(IReport report);
-        void SortCallsByIncomingAbonent(IReport report);
-        void SortCallsByOutgoingAbonent(IReport report);
+        void SortIncomingCallsByAbonent(IReport report);
+        void SortOutgoingCallsByAbonent(IReport report);
     }
 }

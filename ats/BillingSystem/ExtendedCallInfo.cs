@@ -1,5 +1,6 @@
 ﻿using ats.ATS;
 using ats.BillingSys.Contracts;
+using System.Text;
 
 namespace ats.BillingSys
 {
@@ -12,5 +13,10 @@ namespace ats.BillingSys
         public IAbonent From { get; set; }
 
         public CallInfo CallInfo { get; set; }
+
+        public override string ToString()
+        {
+            return "From: " + From.ToString() + "\tTo: " + To.ToString()  + "\n" + CallInfo.ToString();
+        }
     }
 }

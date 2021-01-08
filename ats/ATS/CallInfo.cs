@@ -1,5 +1,6 @@
 ﻿using ats.ATS.States;
 using System;
+using System.Text;
 
 namespace ats.ATS
 {
@@ -14,5 +15,10 @@ namespace ats.ATS
         public TimeSpan Duration { get; set; }
 
         public CallState CallState { get; set; }
+
+        public override string ToString()
+        {
+            return "CallState: " + CallState + "\tCall date: " + CallDate + "\tDuration: " + Duration;
+        }
     }
 }

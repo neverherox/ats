@@ -43,6 +43,7 @@ namespace ats.BillingSys
             report.Calls = callController.GetAbonentCalls(abonent);
             report.IncomingCalls = callController.GetIncomingCalls(abonent);
             report.OutgoingCalls = callController.GetOutgoingCalls(abonent);
+            report.Abonent = abonent;
             foreach(var call in report.Calls)
             {
                 call.Cost = call.CallInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0;
@@ -58,13 +59,13 @@ namespace ats.BillingSys
         {
             report.Calls = report.Calls.OrderBy(x => x.Cost).ToList();
         }
-        public void SortCallsByIncomingAbonent(IReport report)
+        public void SortIncomingCallsByAbonent(IReport report)
         {
-            report.Calls = report.Calls.OrderBy(x => x.From.Name).ToList();
+            report.IncomingCalls = report.IncomingCalls.OrderBy(x => x.From.Name).ToList();
         }
-        public void SortCallsByOutgoingAbonent(IReport report)
+        public void SortOutgoingCallsByAbonent(IReport report)
         {
-            report.Calls = report.Calls.OrderBy(x => x.To.Name).ToList();
+            report.OutgoingCalls = report.OutgoingCalls.OrderBy(x => x.To.Name).ToList();
         }
     }
 }

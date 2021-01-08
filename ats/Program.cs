@@ -68,12 +68,25 @@ namespace ats
             Thread.Sleep(500);
             caller3.Phone.DropCall();
 
-           
 
+            Console.WriteLine();
             IReport report1 = billingSystem.CreateReport(caller1);
             IReport report2 = billingSystem.CreateReport(caller2);
             IReport report3 = billingSystem.CreateReport(caller3);
             IReport report4 = billingSystem.CreateReport(caller4);
+
+            billingSystem.SortIncomingCallsByAbonent(report1);
+            billingSystem.SortIncomingCallsByAbonent(report2);
+            billingSystem.SortIncomingCallsByAbonent(report3);
+            billingSystem.SortIncomingCallsByAbonent(report4);
+
+
+            Console.WriteLine(report1.ToString());
+            Console.WriteLine(report2.ToString());
+            Console.WriteLine(report3.ToString());
+            Console.WriteLine(report4.ToString());
+
+
 
             Console.ReadKey(); 
         }

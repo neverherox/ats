@@ -8,5 +8,10 @@ namespace ats.BillingSys
         public string Name { get; set; }
         public IPhone Phone { get; set; }
         public double Balance { get; set; }
+
+        public override string ToString()
+        {
+            return "Abonent name: " + Name + " Number: " + Phone.PhoneNumber;
+        }
     }
 }
