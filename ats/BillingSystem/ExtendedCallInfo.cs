@@ -16,7 +16,7 @@ namespace ats.BillingSys
 
         public override string ToString()
         {
-            return "From: " + From.ToString() + "\tTo: " + To.ToString()  + "\n" + CallInfo.ToString();
+            return "From: " + From.ToString() + "\tTo: " + To.ToString()  + "\tCost: " + Cost + "\n" + CallInfo.ToString();
         }
     }
 }

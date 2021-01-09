@@ -1,5 +1,6 @@
 ﻿using ats.ats;
 using ats.ats.Contracts;
+using ats.ATS;
 using ats.ATS.States;
 using System;
 
@@ -10,57 +11,56 @@ namespace ats
     {
         public IPort Port { get; set; }
         public string PhoneNumber { get; set; }
-        public string IncomingCallPhoneNumber { get; set; }
-        public string OutgoingCallPhoneNumber { get; set; }
+        public CallEventArg Connection { get; set; }
 
-        public event EventHandler<string> OutgoingCall;
-        public event EventHandler<string> IncomingCall;
-        public event EventHandler Answer;
-        public event EventHandler Drop;
+        public event EventHandler<CallEventArg> OutgoingCall;
+        public event EventHandler<CallEventArg> IncomingCall;
+        public event EventHandler<CallEventArg> Answer;
+        public event EventHandler<CallEventArg> Drop;
 
         public Phone()
         {
-            IncomingCallPhoneNumber = string.Empty;
-            OutgoingCallPhoneNumber = string.Empty;
+            Connection = null;
         }
-        protected virtual void OnOutgoingCall(object sender, string to)
+        protected virtual void OnOutgoingCall(object sender, CallEventArg arg)
         {
-            OutgoingCall?.Invoke(this, to);
+            OutgoingCall?.Invoke(sender, arg);
         }
-        protected virtual void OnIncomingCall(object sender, string from)
+        protected virtual void OnIncomingCall(object sender, CallEventArg arg)
         {
-            IncomingCall?.Invoke(sender, from);
+            IncomingCall?.Invoke(sender, arg);
         }
-        protected virtual void OnAnswerCall(object sender, EventArgs args)
+        protected virtual void OnAnswerCall(object sender, CallEventArg arg)
         {
-            Answer?.Invoke(this, args);
+            Answer?.Invoke(sender, arg);
         }
-        protected virtual void OnDropCall(object sender, EventArgs args)
+        protected virtual void OnDropCall(object sender, CallEventArg arg)
         {
-            Drop?.Invoke(this, args);
+            Drop?.Invoke(sender, arg);
         }
 
         public void Call(string to)
         {
             if (Port.State == PortState.Free)
             {
-                OnOutgoingCall(this, to);
+                Connection = new CallEventArg() { TargetPhoneNumber = to, SourcePhoneNumber = PhoneNumber };
+                OnOutgoingCall(this, Connection);
             }
         }
-        public void IncomingCallFrom(string from)
+        public void IncomingCallFromPort(CallEventArg arg)
         {
-            OnIncomingCall(this, from);
+            OnIncomingCall(this, arg);
         }
         public void AnswerCall()
         {
-            if (IncomingCallPhoneNumber != string.Empty)
+            if (Connection.SourcePhoneNumber != string.Empty)
             {
-                OnAnswerCall(this, null);
+                OnAnswerCall(this, Connection);
             }
         }
         public void DropCall()
         {
-            OnDropCall(this, null);
+            OnDropCall(this, Connection);
         }
 
     }

@@ -2,43 +2,53 @@
 using ats.ats.Contracts;
 using System;
 using ats.ATS.States;
+using ats.ATS;
 
 namespace ats
 {
     public class Port : IPort
     {
-        private PortState state;
-        public event EventHandler StateChanged;
-        public PortState State
-        {
-            get
-            {
-                return state;
-            }
-            set
-            {
-                state = value;
-                OnStateChanged(this, null);
-            }
-        }
+        public PortState State { get; set; }
+
+        public event EventHandler<CallEventArg> OutgoingCall;
+        public event EventHandler<CallEventArg> IncomingCall;
+        public event EventHandler<CallEventArg> Answer;
+        public event EventHandler<CallEventArg> Drop;
+        
         public virtual void RegisterEventHandlersForPphone(IPhone phone)
         {
-            phone.OutgoingCall += (sender, to) =>
+            phone.OutgoingCall += (sender, arg) =>
             {
-                phone.OutgoingCallPhoneNumber = to;
                 State = PortState.Busy;
-                Console.WriteLine(phone.PhoneNumber + " trying  to call " + to);
+                OutgoingCall?.Invoke(this, arg);
             };
-            phone.IncomingCall += (sender, from) =>
+            phone.IncomingCall += (sender, arg) =>
             {
-                phone.IncomingCallPhoneNumber = from;
                 State = PortState.Busy;
-                Console.WriteLine(from + " is calling " + phone.PhoneNumber);
+                phone.Connection = arg;
+            };
+            phone.Answer += (sender, arg) =>
+            {
+                Answer?.Invoke(this, arg);
+            };
+            phone.Drop += (sender, arg) =>
+            {
+                State = PortState.Free;
+                Drop?.Invoke(this, arg);
+            };
+            this.IncomingCall += (sender, arg) =>
+            {
+                phone.IncomingCallFromPort(arg);
             };
         }
-        protected virtual void OnStateChanged(object sender, EventArgs args)
+
+        protected virtual void OnIncomingCall(object sender, CallEventArg arg)
         {
-            StateChanged?.Invoke(sender, args);
+            IncomingCall?.Invoke(sender, arg);
+        }
+        public void IncomingCallFromStation(CallEventArg arg)
+        {
+            OnIncomingCall(this, arg);
         }
     }
 }

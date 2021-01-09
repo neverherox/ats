@@ -17,16 +17,10 @@ namespace ats.BillingSys
         {
             abonentController = new AbonentController();
             callController = new CallController();
-            Tariff.CostPerMinute = 0.3;
         }
         public virtual void RegisterStationEventHandlers(IStation station)
         {
-            station.CallHappened += OnCallHappened;
-        }
-        
-        public void RegisterAbonent(IAbonent abonent)
-        {
-            abonentController.Add(abonent);
+            station.CallService.CallHappened += OnCallHappened;
         }
         private void OnCallHappened(object sender, CallInfo callInfo)
         {
@@ -35,7 +29,12 @@ namespace ats.BillingSys
                 CallInfo = callInfo,
                 To = abonentController.GetAbonentByPhoneNumber(callInfo.To),
                 From = abonentController.GetAbonentByPhoneNumber(callInfo.From),
-            });
+                Cost = callInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0
+        });
+        }
+        public void RegisterAbonent(IAbonent abonent)
+        {
+            abonentController.Add(abonent);
         }
         public IReport CreateReport(IAbonent abonent)
         {
@@ -44,10 +43,6 @@ namespace ats.BillingSys
             report.IncomingCalls = callController.GetIncomingCalls(abonent);
             report.OutgoingCalls = callController.GetOutgoingCalls(abonent);
             report.Abonent = abonent;
-            foreach(var call in report.Calls)
-            {
-                call.Cost = call.CallInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0;
-            }
             return report;
         }
 

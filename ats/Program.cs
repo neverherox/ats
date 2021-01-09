@@ -34,10 +34,11 @@ namespace ats
             billingSystem.RegisterAbonent(caller4);
 
 
+
             caller1.Phone.Call(caller3.Phone.PhoneNumber);
             caller3.Phone.AnswerCall();
             Thread.Sleep(1000);
-           
+
             caller2.Phone.Call(caller4.Phone.PhoneNumber);
             caller4.Phone.AnswerCall();
             Thread.Sleep(1500);
@@ -49,11 +50,11 @@ namespace ats
 
             caller1.Phone.Call(caller2.Phone.PhoneNumber);
             caller2.Phone.AnswerCall();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             caller3.Phone.Call(caller4.Phone.PhoneNumber);
             caller4.Phone.AnswerCall();
-            Thread.Sleep(1500);
+            Thread.Sleep(3000);
 
             caller1.Phone.DropCall();
             caller2.Phone.DropCall();
@@ -61,11 +62,11 @@ namespace ats
             caller4.Phone.DropCall();
 
             caller2.Phone.Call(caller3.Phone.PhoneNumber);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             caller2.Phone.DropCall();
 
             caller2.Phone.Call(caller3.Phone.PhoneNumber);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             caller3.Phone.DropCall();
 
 
@@ -74,11 +75,6 @@ namespace ats
             IReport report2 = billingSystem.CreateReport(caller2);
             IReport report3 = billingSystem.CreateReport(caller3);
             IReport report4 = billingSystem.CreateReport(caller4);
-
-            billingSystem.SortIncomingCallsByAbonent(report1);
-            billingSystem.SortIncomingCallsByAbonent(report2);
-            billingSystem.SortIncomingCallsByAbonent(report3);
-            billingSystem.SortIncomingCallsByAbonent(report4);
 
 
             Console.WriteLine(report1.ToString());

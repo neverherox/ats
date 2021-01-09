@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using ats.ATS.States;
+using System;
 
 namespace ats.ATS.Controllers
 {
-    public class CallController : ICallController
+    public class CallService : ICallService
     {
         private ICollection<CallInfo> calls;
-        public CallController()
+        public event EventHandler<CallInfo> CallHappened;
+
+        public CallService()
         {
             calls = new List<CallInfo>();
         }
-        public void AddCall(CallInfo processedCall)
+        public void Add(CallInfo processedCall)
         {
             calls.Add(processedCall);
         }
@@ -26,6 +29,15 @@ namespace ats.ATS.Controllers
             {
                 calls.Remove(call);
             }
+        }
+
+        protected virtual void OnCallHappened(object sender, CallInfo call)
+        {
+            CallHappened?.Invoke(sender, call);
+        }
+        public void RegisterCall(CallInfo call)
+        {
+            OnCallHappened(this, call);
         }
     }
 }

@@ -13,5 +13,9 @@ namespace ats.BillingSys
         {
             return "Abonent name: " + Name + " Number: " + Phone.PhoneNumber;
         }
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
     }
 }

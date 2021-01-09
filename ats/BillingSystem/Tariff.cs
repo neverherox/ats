@@ -2,6 +2,6 @@
 {
     public static class Tariff
     {
-        public static double CostPerMinute { get; set; }
+        public const double CostPerMinute = 0.3;
     }
 }

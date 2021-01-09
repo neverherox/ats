@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace ats.ATS.Controllers
 {
-    public class PortController : IPortController
+    public class PortService : IPortService
     {
         private IDictionary<string, IPort> busyPorts;
-        public PortController()
+        public PortService()
         {
             busyPorts = new Dictionary<string, IPort>();
         }

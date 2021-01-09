@@ -1,25 +1,23 @@
-﻿using ats.ATS.States;
+﻿using ats.ATS;
 using System;
 
 namespace ats.ats.Contracts
 {
     public interface IPhone
     {
-        string PhoneNumber { get; }
-        string IncomingCallPhoneNumber { get; set; }
-        string OutgoingCallPhoneNumber { get; set; }
         IPort Port { get; set; }
+        string PhoneNumber { get; set; }
+        CallEventArg Connection { get; set; }
 
-        event EventHandler<string> OutgoingCall;
+        event EventHandler<CallEventArg> OutgoingCall;
 
-        event EventHandler<string> IncomingCall;
+        event EventHandler<CallEventArg> IncomingCall;
 
-        event EventHandler Answer;
+        event EventHandler<CallEventArg> Answer;
 
-        event EventHandler Drop;
-
+        event EventHandler<CallEventArg> Drop;
         void Call(string to);
-        void IncomingCallFrom(string from);
+        void IncomingCallFromPort(CallEventArg arg);
         void AnswerCall();
         void DropCall();
     }

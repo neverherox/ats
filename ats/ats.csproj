@@ -43,16 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ATS\EventArgs\CallEventArg.cs" />
     <Compile Include="ATS\CallInfo.cs" />
-    <Compile Include="ATS\Controllers\Contracts\ICallController.cs" />
+    <Compile Include="ATS\Services\Contracts\ICallService.cs" />
     <Compile Include="ATS\Contracts\IPhone.cs" />
     <Compile Include="ATS\Contracts\IPort.cs" />
     <Compile Include="ATS\Contracts\IStation.cs" />
-    <Compile Include="ATS\Controllers\CallController.cs" />
-    <Compile Include="ATS\Controllers\Contracts\IPhoneController.cs" />
-    <Compile Include="ATS\Controllers\Contracts\IPortController.cs" />
-    <Compile Include="ATS\Controllers\PhoneController.cs" />
-    <Compile Include="ATS\Controllers\PortController.cs" />
+    <Compile Include="ATS\Services\CallService.cs" />
+    <Compile Include="ATS\Services\Contracts\IPortService.cs" />
+    <Compile Include="ATS\Services\PortService.cs" />
     <Compile Include="ATS\Phone.cs" />
     <Compile Include="ATS\Port.cs" />
     <Compile Include="ATS\States\CallState.cs" />

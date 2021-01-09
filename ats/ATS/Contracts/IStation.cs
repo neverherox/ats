@@ -1,11 +1,12 @@
 ﻿using ats.ATS;
+using ats.ATS.Contracts;
 using System;
 
 namespace ats.ats.Contracts
 {
     public interface IStation
     {
-        event EventHandler<CallInfo> CallHappened;
+        ICallService CallService { get; }
         void RegisterPhone(IPhone phone);
     }
 }
