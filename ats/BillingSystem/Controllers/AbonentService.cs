@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace ats.BillingSys.Controllers
 {
-    public class AbonentController : IAbonentController
+    public class AbonentService : IAbonentService
     {
         private ICollection<IAbonent> abonents;
-        public AbonentController()
+        public AbonentService()
         {
             abonents = new List<IAbonent>();
         }

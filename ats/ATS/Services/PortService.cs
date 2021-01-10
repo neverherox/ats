@@ -17,7 +17,7 @@ namespace ats.ATS.Controllers
             if (port != null && phone != null)
             {
                 phone.Port = port;
-                port.RegisterEventHandlersForPphone(phone);
+                port.RegisterEventHandlersForPhone(phone);
                 busyPorts.Add(phone.PhoneNumber, port);
             }
         }

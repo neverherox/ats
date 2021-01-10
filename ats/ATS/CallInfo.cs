@@ -13,7 +13,7 @@ namespace ats.ATS
         public CallState CallState { get; set; }
         public override string ToString()
         {
-            return "CallState: " + CallState + "\tCall date: " + CallDate.TimeOfDay + "\tDuration: " + Duration;
+            return "CallState: " + CallState + "\nCall date: " + CallDate.TimeOfDay + "\nDuration: " + Duration;
         }
     }
 }

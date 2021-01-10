@@ -6,6 +6,6 @@ namespace ats.BillingSys.Contracts
     {
         string Name { get; }
         IPhone Phone { get; }
-        double Balance { get; }
+        double Balance { get; set; }
     }
 }

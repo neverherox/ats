@@ -17,11 +17,6 @@ namespace ats
         public event EventHandler<CallEventArg> IncomingCall;
         public event EventHandler<CallEventArg> Answer;
         public event EventHandler<CallEventArg> Drop;
-
-        public Phone()
-        {
-            Connection = null;
-        }
         protected virtual void OnOutgoingCall(object sender, CallEventArg arg)
         {
             OutgoingCall?.Invoke(sender, arg);
@@ -43,7 +38,7 @@ namespace ats
         {
             if (Port.State == PortState.Free)
             {
-                Connection = new CallEventArg() { TargetPhoneNumber = to, SourcePhoneNumber = PhoneNumber };
+                Connection = new CallEventArg { TargetPhoneNumber = to, SourcePhoneNumber = PhoneNumber };
                 OnOutgoingCall(this, Connection);
             }
         }

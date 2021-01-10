@@ -8,11 +8,11 @@ namespace ats.BillingSys
     public class Report : IReport
     {
         private StringBuilder sb;
+        public IAbonent Abonent { get; set; }
 
         private ICollection<ExtendedCallInfo> calls;
         private ICollection<ExtendedCallInfo> incomingCalls;
         private ICollection<ExtendedCallInfo> outgoingCalls;
-        public IAbonent Abonent { get; set; }
         public ICollection<ExtendedCallInfo> Calls { get => calls.ToList(); set => calls = value; }
         public ICollection<ExtendedCallInfo> IncomingCalls { get => incomingCalls.ToList(); set => incomingCalls = value; }
         public ICollection<ExtendedCallInfo> OutgoingCalls { get => outgoingCalls.ToList(); set => outgoingCalls = value; }
@@ -27,7 +27,7 @@ namespace ats.BillingSys
             {
                 sb.Clear();
             }
-            sb.Append("Report for: " + Abonent.Name);
+            sb.Append("Report for: " + Abonent.Name + "\tBalance: " + Abonent.Balance);
             if (incomingCalls.Count > 0)
             {
                 sb.Append("\nIncoming calls:\n");

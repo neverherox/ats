@@ -5,9 +5,9 @@ namespace ats.ats.Contracts
 {
     public interface IPhone
     {
-        IPort Port { get; set; }
-        string PhoneNumber { get; set; }
-        CallEventArg Connection { get; set; }
+        IPort Port { set; }
+        string PhoneNumber { get; }
+        CallEventArg Connection { set; }
 
         event EventHandler<CallEventArg> OutgoingCall;
 

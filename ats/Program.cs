@@ -70,11 +70,19 @@ namespace ats
             caller3.Phone.DropCall();
 
 
-            Console.WriteLine();
+
             IReport report1 = billingSystem.CreateReport(caller1);
             IReport report2 = billingSystem.CreateReport(caller2);
             IReport report3 = billingSystem.CreateReport(caller3);
             IReport report4 = billingSystem.CreateReport(caller4);
+
+
+            billingSystem.SortOutgoingCallsByAbonent(report1);
+
+            //IReport report1 = billingSystem.CreateReport(caller1, DateTime.Now.AddSeconds(-8));
+            //IReport report2 = billingSystem.CreateReport(caller2, DateTime.Now.AddSeconds(-8));
+            //IReport report3 = billingSystem.CreateReport(caller3, DateTime.Now.AddSeconds(-8));
+            //IReport report4 = billingSystem.CreateReport(caller4, DateTime.Now.AddSeconds(-8));
 
 
             Console.WriteLine(report1.ToString());

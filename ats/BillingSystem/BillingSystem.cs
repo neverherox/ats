@@ -4,48 +4,76 @@ using ats.BillingSys.Controllers;
 using ats.BillingSys.Contracts;
 using ats.BillingSys.Controllers.Contracts;
 using System.Linq;
-
+using ats.ATS.States;
+using System;
 
 namespace ats.BillingSys
 {
     public class BillingSystem : IBillingSystem
     {
-        private IAbonentController abonentController;
-        private ICallController callController;
+        private IAbonentService abonentService;
+        private ICallService callService;
 
         public BillingSystem()
         {
-            abonentController = new AbonentController();
-            callController = new CallController();
+            abonentService = new AbonentService();
+            callService = new CallService();
+            RegisterCallServiceEventHandlers(callService);
         }
         public virtual void RegisterStationEventHandlers(IStation station)
         {
             station.CallService.CallHappened += OnCallHappened;
         }
-        private void OnCallHappened(object sender, CallInfo callInfo)
+        public virtual void RegisterCallServiceEventHandlers(ICallService callService)
         {
-            callController.Add(new ExtendedCallInfo
+            callService.ChargeMoney += OnChargeMoney;
+        }
+        private void OnCallHappened(object sender, CallInfo call)
+        {
+            ExtendedCallInfo extendedCall = new ExtendedCallInfo
             {
-                CallInfo = callInfo,
-                To = abonentController.GetAbonentByPhoneNumber(callInfo.To),
-                From = abonentController.GetAbonentByPhoneNumber(callInfo.From),
-                Cost = callInfo.Duration.Seconds * Tariff.CostPerMinute / 60.0
-        });
+                CallInfo = call,
+                To = abonentService.GetAbonentByPhoneNumber(call.To),
+                From = abonentService.GetAbonentByPhoneNumber(call.From),
+            };
+            if (call.CallState == CallState.Processed)
+            {
+                extendedCall.Cost = call.Duration.Seconds * Tariff.CostPerMinute / 60.0;
+                callService.ChargeForCall(extendedCall);
+            }
+            callService.Add(extendedCall);
+        }
+
+        private void OnChargeMoney(object sender, ExtendedCallInfo call)
+        {
+            call.From.Balance -= call.Cost;
         }
         public void RegisterAbonent(IAbonent abonent)
         {
-            abonentController.Add(abonent);
+            abonentService.Add(abonent);
         }
         public IReport CreateReport(IAbonent abonent)
         {
-            IReport report = new Report();
-            report.Calls = callController.GetAbonentCalls(abonent);
-            report.IncomingCalls = callController.GetIncomingCalls(abonent);
-            report.OutgoingCalls = callController.GetOutgoingCalls(abonent);
-            report.Abonent = abonent;
+            IReport report = new Report
+            {
+                Calls = callService.GetAbonentCalls(abonent),
+                IncomingCalls = callService.GetIncomingCalls(abonent),
+                OutgoingCalls = callService.GetOutgoingCalls(abonent),
+                Abonent = abonent
+            };
             return report;
         }
-
+        public IReport CreateReport(IAbonent abonent, DateTime from)
+        {
+            IReport report = new Report
+            {
+                Calls = callService.GetAbonentCalls(abonent).Intersect(callService.GetCallsStartedFrom(from)).ToList(),
+                IncomingCalls = callService.GetIncomingCalls(abonent).Intersect(callService.GetCallsStartedFrom(from)).ToList(),
+                OutgoingCalls = callService.GetOutgoingCalls(abonent).Intersect(callService.GetCallsStartedFrom(from)).ToList(),
+                Abonent = abonent
+            };
+            return report;
+        }
         public void SortCallsByDate(IReport report)
         {
             report.Calls = report.Calls.OrderBy(x => x.CallInfo.CallDate).ToList();

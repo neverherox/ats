@@ -17,6 +17,6 @@ namespace ats.ats.Contracts
 
         void IncomingCallFromStation(CallEventArg arg);
 
-        void RegisterEventHandlersForPphone(IPhone phone);
+        void RegisterEventHandlersForPhone(IPhone phone);
     }
 }

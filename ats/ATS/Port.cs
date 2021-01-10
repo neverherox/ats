@@ -15,7 +15,7 @@ namespace ats
         public event EventHandler<CallEventArg> Answer;
         public event EventHandler<CallEventArg> Drop;
         
-        public virtual void RegisterEventHandlersForPphone(IPhone phone)
+        public virtual void RegisterEventHandlersForPhone(IPhone phone)
         {
             phone.OutgoingCall += (sender, arg) =>
             {
