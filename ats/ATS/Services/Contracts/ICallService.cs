@@ -6,9 +6,8 @@ namespace ats.ATS.Contracts
     public interface ICallService
     {
         event EventHandler<CallInfo> CallHappened;
-        void Add(CallInfo processedCall);
-        void Remove(CallInfo call);
-        void RegisterCall(CallInfo call);
-        CallInfo GetCall(string from, string to);
+        void RegisterUnprocessedCall(CallEventArg arg);
+        void RegisterProcessedCall(CallEventArg arg);
+        void RegisterDroppedCall(CallEventArg arg);
     }
 }

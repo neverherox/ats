@@ -48,15 +48,8 @@ namespace ats
                 if (receiverPort.State == PortState.Free)
                 {
                     receiverPort.IncomingCallFromStation(arg);
-                    CallInfo unprocessedCall = new CallInfo
-                    {
-                        From = arg.SourcePhoneNumber,
-                        To = arg.TargetPhoneNumber,
-                        CallDate = DateTime.Now,
-                        Duration = TimeSpan.Zero,
-                        CallState = CallState.Unprocessed
-                    };
-                    callService.Add(unprocessedCall);
+                    arg.State = CallState.Unprocessed;
+                    callService.RegisterUnprocessedCall(arg);
                 }
                 else
                 {
@@ -66,37 +59,27 @@ namespace ats
         }
         private void OnIncomingCallAnswer(object sender, CallEventArg arg)
         {
-            CallInfo processedCall = callService.GetCall(arg.SourcePhoneNumber, arg.TargetPhoneNumber);
-            if (processedCall != null)
-            {
-                processedCall.CallDate = DateTime.Now;
-                processedCall.CallState = CallState.Processed;
-            }
+            arg.State = CallState.Processed;
+            callService.RegisterProcessedCall(arg);
         }
         private void OnCallDrop(object sender, CallEventArg arg)
         {
-            if (arg.SourcePhoneNumber != string.Empty && arg.TargetPhoneNumber != string.Empty)
+            if (arg.State == CallState.Processed || arg.State == CallState.Unprocessed)
             {
-                CallInfo call = callService.GetCall(arg.SourcePhoneNumber, arg.TargetPhoneNumber);
-                if (call != null)
+                var callerPort = portService.GetPortByPhoneNumber(arg.SourcePhoneNumber);
+                var receiverPort = portService.GetPortByPhoneNumber(arg.TargetPhoneNumber);
+                if (callerPort.State == PortState.Busy)
                 {
-                    call.Duration = DateTime.Now - call.CallDate;
-                    callService.Remove(call);
-                    var callerPort = portService.GetPortByPhoneNumber(arg.SourcePhoneNumber);
-                    var receiverPort = portService.GetPortByPhoneNumber(arg.TargetPhoneNumber);
-                    if (callerPort.State == PortState.Busy)
-                    {
-                        callerPort.State = PortState.Free;
-                    }
-                    if (receiverPort.State == PortState.Busy)
-                    {
-                        receiverPort.State = PortState.Free;
-                    }
-                    callService.RegisterCall(call);
+                    callerPort.State = PortState.Free;
                 }
-                arg.SourcePhoneNumber = string.Empty;
-                arg.TargetPhoneNumber = string.Empty;
+                if (receiverPort.State == PortState.Busy)
+                {
+                    receiverPort.State = PortState.Free;
+                }
+                callService.RegisterDroppedCall(arg);
             }
+            arg.SourcePhoneNumber = string.Empty;
+            arg.TargetPhoneNumber = string.Empty;
         }
     }
 }

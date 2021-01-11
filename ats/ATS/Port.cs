@@ -2,6 +2,7 @@
 using ats.ats.Contracts;
 using System;
 using ats.ATS;
+using ats.ATS.States;
 
 namespace ats
 {
@@ -26,7 +27,7 @@ namespace ats
         public event EventHandler<CallEventArg> IncomingCall;
         public event EventHandler<CallEventArg> Answer;
         public event EventHandler<CallEventArg> Drop;
-        
+
         public virtual void RegisterEventHandlersForPhone(IPhone phone)
         {
             phone.OutgoingCall += (sender, arg) =>
@@ -48,10 +49,7 @@ namespace ats
             };
             phone.Drop += (sender, arg) =>
             {
-                if (phone.Port.State == PortState.Busy)
-                {
-                    State = PortState.Free;
-                }
+                State = PortState.Free;
                 Drop?.Invoke(this, arg);
             };
             this.IncomingCall += (sender, arg) =>

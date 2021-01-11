@@ -3,6 +3,7 @@
     public enum CallState
     {
         Processed, 
-        Unprocessed
+        Unprocessed,
+        None
     }
 }

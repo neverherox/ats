@@ -69,7 +69,7 @@ namespace ats
             caller2.Phone.Call(caller3.Phone.PhoneNumber);
             Thread.Sleep(1000);
             caller3.Phone.DropCall();
-
+            caller2.Phone.DropCall();
 
 
             IReport report1 = billingSystem.CreateReport(caller1);

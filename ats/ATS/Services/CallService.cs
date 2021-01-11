@@ -15,29 +15,36 @@ namespace ats.ATS.Controllers
         {
             calls = new List<CallInfo>();
         }
-        public void Add(CallInfo processedCall)
+
+        public void RegisterUnprocessedCall(CallEventArg arg)
         {
-            calls.Add(processedCall);
-        }
-        public CallInfo GetCall(string from, string to)
-        {
-            return calls.Where(x => x.From.Equals(from) && x.To.Equals(to)).FirstOrDefault();
-        }
-        public void Remove(CallInfo call)
-        {
-            if (call != null)
+            calls.Add(new CallInfo
             {
-                calls.Remove(call);
+                From = arg.SourcePhoneNumber,
+                To = arg.TargetPhoneNumber,
+                CallDate = DateTime.Now,
+                Duration = TimeSpan.Zero,
+                CallState = arg.State
+            });
+        }
+        public void RegisterProcessedCall(CallEventArg arg)
+        {
+            var processedCall = calls.Where(x => x.From == arg.SourcePhoneNumber && x.To == arg.TargetPhoneNumber).FirstOrDefault();
+            if (processedCall != null)
+            {
+                processedCall.CallDate = DateTime.Now;
+                processedCall.CallState = arg.State;
             }
         }
-
-        protected virtual void OnCallHappened(object sender, CallInfo call)
+        public void RegisterDroppedCall(CallEventArg arg)
         {
-            CallHappened?.Invoke(sender, call);
-        }
-        public void RegisterCall(CallInfo call)
-        {
-            OnCallHappened(this, call);
+            CallInfo call = calls.Where(x => x.From == arg.SourcePhoneNumber && x.To == arg.TargetPhoneNumber).FirstOrDefault();
+            if (call != null)
+            {
+                call.Duration = DateTime.Now - call.CallDate;
+                calls.Remove(call);
+                CallHappened?.Invoke(this, call);
+            }
         }
     }
 }

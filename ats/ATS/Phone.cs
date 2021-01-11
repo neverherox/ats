@@ -20,7 +20,7 @@ namespace ats
 
         public Phone()
         {
-            Connection = new CallEventArg { SourcePhoneNumber = string.Empty, TargetPhoneNumber = string.Empty };
+            Connection = new CallEventArg { SourcePhoneNumber = string.Empty, TargetPhoneNumber = string.Empty, State = CallState.None };
         }
         protected virtual void OnOutgoingCall(object sender, CallEventArg arg)
         {
@@ -43,7 +43,7 @@ namespace ats
         {
             if (Port.State == PortState.Free)
             {
-                Connection = new CallEventArg { TargetPhoneNumber = to, SourcePhoneNumber = PhoneNumber };
+                Connection = new CallEventArg { TargetPhoneNumber = to, SourcePhoneNumber = PhoneNumber, State = CallState.None };
                 OnOutgoingCall(this, Connection);
             }
         }
@@ -60,7 +60,10 @@ namespace ats
         }
         public void DropCall()
         {
-            OnDropCall(this, Connection);
+            if (Port.State == PortState.Busy)
+            {
+                OnDropCall(this, Connection);
+            }
         }
 
     }
