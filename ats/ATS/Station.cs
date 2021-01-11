@@ -34,6 +34,10 @@ namespace ats
             port.OutgoingCall += OnOutgoingCall;
             port.Answer += OnIncomingCallAnswer;
             port.Drop += OnCallDrop;
+            port.StateChanged += (sender, state) =>
+            {
+                Console.WriteLine("Station registered a change in the port state to " + state);
+            };
         }
 
         private void OnOutgoingCall(object sender, CallEventArg arg)
@@ -53,6 +57,10 @@ namespace ats
                         CallState = CallState.Unprocessed
                     };
                     callService.Add(unprocessedCall);
+                }
+                else
+                {
+                    Console.WriteLine("Receiver port is " + receiverPort.State);
                 }
             }
         }
@@ -76,13 +84,13 @@ namespace ats
                     callService.Remove(call);
                     var callerPort = portService.GetPortByPhoneNumber(arg.SourcePhoneNumber);
                     var receiverPort = portService.GetPortByPhoneNumber(arg.TargetPhoneNumber);
-                    if (callerPort.State == PortState.Free)
-                    {
-                        receiverPort.State = PortState.Free;
-                    }
-                    else
+                    if (callerPort.State == PortState.Busy)
                     {
                         callerPort.State = PortState.Free;
+                    }
+                    if (receiverPort.State == PortState.Busy)
+                    {
+                        receiverPort.State = PortState.Free;
                     }
                     callService.RegisterCall(call);
                 }

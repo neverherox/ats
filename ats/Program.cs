@@ -34,10 +34,11 @@ namespace ats
             billingSystem.RegisterAbonent(caller4);
 
 
-
             caller1.Phone.Call(caller3.Phone.PhoneNumber);
             caller3.Phone.AnswerCall();
+            caller2.Phone.Call(caller1.Phone.PhoneNumber);
             Thread.Sleep(1000);
+            caller2.Phone.DropCall();
 
             caller2.Phone.Call(caller4.Phone.PhoneNumber);
             caller4.Phone.AnswerCall();
@@ -77,14 +78,14 @@ namespace ats
             IReport report4 = billingSystem.CreateReport(caller4);
 
 
-            billingSystem.SortOutgoingCallsByAbonent(report1);
+            //billingSystem.SortOutgoingCallsByAbonent(report1);
 
             //IReport report1 = billingSystem.CreateReport(caller1, DateTime.Now.AddSeconds(-8));
             //IReport report2 = billingSystem.CreateReport(caller2, DateTime.Now.AddSeconds(-8));
             //IReport report3 = billingSystem.CreateReport(caller3, DateTime.Now.AddSeconds(-8));
             //IReport report4 = billingSystem.CreateReport(caller4, DateTime.Now.AddSeconds(-8));
 
-
+            Console.WriteLine();
             Console.WriteLine(report1.ToString());
             Console.WriteLine(report2.ToString());
             Console.WriteLine(report3.ToString());

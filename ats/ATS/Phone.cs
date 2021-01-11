@@ -17,6 +17,11 @@ namespace ats
         public event EventHandler<CallEventArg> IncomingCall;
         public event EventHandler<CallEventArg> Answer;
         public event EventHandler<CallEventArg> Drop;
+
+        public Phone()
+        {
+            Connection = new CallEventArg { SourcePhoneNumber = string.Empty, TargetPhoneNumber = string.Empty };
+        }
         protected virtual void OnOutgoingCall(object sender, CallEventArg arg)
         {
             OutgoingCall?.Invoke(sender, arg);

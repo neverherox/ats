@@ -7,6 +7,8 @@ namespace ats.ats.Contracts
     {
         PortState State { get; set; }
 
+        event EventHandler<PortState> StateChanged;
+
         event EventHandler<CallEventArg> OutgoingCall;
 
         event EventHandler<CallEventArg> IncomingCall;
