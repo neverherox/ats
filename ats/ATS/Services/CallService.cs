@@ -16,7 +16,7 @@ namespace ats.ATS.Controllers
             calls = new List<CallInfo>();
         }
 
-        public void RegisterUnprocessedCall(CallEventArg arg)
+        public void RegisterUnprocessedCall(CallEventArgs arg)
         {
             calls.Add(new CallInfo
             {
@@ -27,7 +27,7 @@ namespace ats.ATS.Controllers
                 CallState = arg.State
             });
         }
-        public void RegisterProcessedCall(CallEventArg arg)
+        public void RegisterProcessedCall(CallEventArgs arg)
         {
             var processedCall = calls.Where(x => x.From == arg.SourcePhoneNumber && x.To == arg.TargetPhoneNumber).FirstOrDefault();
             if (processedCall != null)
@@ -36,7 +36,7 @@ namespace ats.ATS.Controllers
                 processedCall.CallState = arg.State;
             }
         }
-        public void RegisterDroppedCall(CallEventArg arg)
+        public void RegisterDroppedCall(CallEventArgs arg)
         {
             CallInfo call = calls.Where(x => x.From == arg.SourcePhoneNumber && x.To == arg.TargetPhoneNumber).FirstOrDefault();
             if (call != null)

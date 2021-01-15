@@ -8,5 +8,6 @@ namespace ats.ats.Contracts
     {
         ICallService CallService { get; }
         void RegisterPhone(IPhone phone);
+        void UnregisterPhone(IPhone phone);
     }
 }

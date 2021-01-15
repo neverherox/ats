@@ -13,7 +13,6 @@ namespace ats
     {
         private IPortService portService;
         private ICallService callService;
-
         public ICallService CallService { get => callService; }
 
         public Station()
@@ -28,7 +27,11 @@ namespace ats
             portService.MapPhoneToPort(phone, port);
             RegisterPortEventHandlers(port);
         }
-
+        public void UnregisterPhone(IPhone phone)
+        {
+            portService.RemovePort(phone.PhoneNumber);
+            phone.Port = null;
+        }
         public virtual void RegisterPortEventHandlers(IPort port)
         {
             port.OutgoingCall += OnOutgoingCall;
@@ -40,7 +43,7 @@ namespace ats
             };
         }
 
-        private void OnOutgoingCall(object sender, CallEventArg arg)
+        private void OnOutgoingCall(object sender, CallEventArgs arg)
         {
             var receiverPort = portService.GetPortByPhoneNumber(arg.TargetPhoneNumber);
             if (receiverPort != null)
@@ -57,12 +60,12 @@ namespace ats
                 }
             }
         }
-        private void OnIncomingCallAnswer(object sender, CallEventArg arg)
+        private void OnIncomingCallAnswer(object sender, CallEventArgs arg)
         {
             arg.State = CallState.Processed;
             callService.RegisterProcessedCall(arg);
         }
-        private void OnCallDrop(object sender, CallEventArg arg)
+        private void OnCallDrop(object sender, CallEventArgs arg)
         {
             if (arg.State == CallState.Processed || arg.State == CallState.Unprocessed)
             {

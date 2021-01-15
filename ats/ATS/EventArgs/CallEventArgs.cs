@@ -1,7 +1,9 @@
 ﻿using ats.ATS.States;
+using System;
+
 namespace ats.ATS
 {
-    public class CallEventArg
+    public class CallEventArgs : EventArgs
     {
         public string SourcePhoneNumber { get; set; }
         public string TargetPhoneNumber { get; set; }

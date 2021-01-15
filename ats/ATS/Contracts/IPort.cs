@@ -9,15 +9,15 @@ namespace ats.ats.Contracts
 
         event EventHandler<PortState> StateChanged;
 
-        event EventHandler<CallEventArg> OutgoingCall;
+        event EventHandler<CallEventArgs> OutgoingCall;
 
-        event EventHandler<CallEventArg> IncomingCall;
+        event EventHandler<CallEventArgs> IncomingCall;
 
-        event EventHandler<CallEventArg> Answer;
+        event EventHandler<CallEventArgs> Answer;
 
-        event EventHandler<CallEventArg> Drop;
+        event EventHandler<CallEventArgs> Drop;
 
-        void IncomingCallFromStation(CallEventArg arg);
+        void IncomingCallFromStation(CallEventArgs arg);
 
         void RegisterEventHandlersForPhone(IPhone phone);
     }

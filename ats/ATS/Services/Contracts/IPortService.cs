@@ -7,5 +7,6 @@ namespace ats.ATS.Controllers.Contracts
         void MapPhoneToPort(IPhone phone, IPort port);
         IPort GetPortByPhoneNumber(string phoneNumber);
         IPort CreatePort();
+        void RemovePort(string phoneNumber);
     }
 }

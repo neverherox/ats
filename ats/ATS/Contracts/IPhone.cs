@@ -7,17 +7,17 @@ namespace ats.ats.Contracts
     {
         IPort Port { get; set; }
         string PhoneNumber { get; }
-        CallEventArg Connection { set; }
+        CallEventArgs Connection { set; }
 
-        event EventHandler<CallEventArg> OutgoingCall;
+        event EventHandler<CallEventArgs> OutgoingCall;
 
-        event EventHandler<CallEventArg> IncomingCall;
+        event EventHandler<CallEventArgs> IncomingCall;
 
-        event EventHandler<CallEventArg> Answer;
+        event EventHandler<CallEventArgs> Answer;
 
-        event EventHandler<CallEventArg> Drop;
+        event EventHandler<CallEventArgs> Drop;
         void Call(string to);
-        void IncomingCallFromPort(CallEventArg arg);
+        void IncomingCallFromPort(CallEventArgs arg);
         void AnswerCall();
         void DropCall();
     }

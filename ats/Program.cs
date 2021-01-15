@@ -18,11 +18,11 @@ namespace ats
             IPhone phone2 = new Phone { PhoneNumber = "222222222222222" };
             IPhone phone3 = new Phone { PhoneNumber = "333333333333333" };
             IPhone phone4 = new Phone { PhoneNumber = "444444444444444" };
+
             station.RegisterPhone(phone1);
             station.RegisterPhone(phone2);
             station.RegisterPhone(phone3);
             station.RegisterPhone(phone4);
-
 
             IAbonent caller1 = new Abonent { Name = "A", Phone = phone1 };
             IAbonent caller2 = new Abonent { Name = "B", Phone = phone2 };
@@ -77,21 +77,11 @@ namespace ats
             IReport report3 = billingSystem.CreateReport(caller3);
             IReport report4 = billingSystem.CreateReport(caller4);
 
-
-            //billingSystem.SortOutgoingCallsByAbonent(report1);
-
-            //IReport report1 = billingSystem.CreateReport(caller1, DateTime.Now.AddSeconds(-8));
-            //IReport report2 = billingSystem.CreateReport(caller2, DateTime.Now.AddSeconds(-8));
-            //IReport report3 = billingSystem.CreateReport(caller3, DateTime.Now.AddSeconds(-8));
-            //IReport report4 = billingSystem.CreateReport(caller4, DateTime.Now.AddSeconds(-8));
-
             Console.WriteLine();
             Console.WriteLine(report1.ToString());
             Console.WriteLine(report2.ToString());
             Console.WriteLine(report3.ToString());
             Console.WriteLine(report4.ToString());
-
-
 
             Console.ReadKey(); 
         }

@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATS\EventArgs\CallEventArg.cs" />
+    <Compile Include="ATS\EventArgs\CallEventArgs.cs" />
     <Compile Include="ATS\CallInfo.cs" />
     <Compile Include="ATS\Services\Contracts\ICallService.cs" />
     <Compile Include="ATS\Contracts\IPhone.cs" />
@@ -61,10 +61,10 @@
     <Compile Include="BillingSystem\Contracts\IBillingSystem.cs" />
     <Compile Include="BillingSystem\Contracts\IAbonent.cs" />
     <Compile Include="BillingSystem\Contracts\IReport.cs" />
-    <Compile Include="BillingSystem\Controllers\CallService.cs" />
-    <Compile Include="BillingSystem\Controllers\AbonentService.cs" />
-    <Compile Include="BillingSystem\Controllers\Contracts\ICallService.cs" />
-    <Compile Include="BillingSystem\Controllers\Contracts\IAbonentService.cs" />
+    <Compile Include="BillingSystem\Services\CallService.cs" />
+    <Compile Include="BillingSystem\Services\AbonentService.cs" />
+    <Compile Include="BillingSystem\Services\Contracts\ICallService.cs" />
+    <Compile Include="BillingSystem\Services\Contracts\IAbonentService.cs" />
     <Compile Include="BillingSystem\ExtendedCallInfo.cs" />
     <Compile Include="BillingSystem\Report.cs" />
     <Compile Include="BillingSystem\Tariff.cs" />

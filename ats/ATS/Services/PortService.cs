@@ -36,5 +36,9 @@ namespace ats.ATS.Controllers
             port.State = PortState.Free;
             return port;
         }
+        public void RemovePort(string phoneNumber)
+        {
+            busyPorts.Remove(phoneNumber);
+        }
     }
 }

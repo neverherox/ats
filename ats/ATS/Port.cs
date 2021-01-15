@@ -23,10 +23,10 @@ namespace ats
         }
 
         public event EventHandler<PortState> StateChanged;
-        public event EventHandler<CallEventArg> OutgoingCall;
-        public event EventHandler<CallEventArg> IncomingCall;
-        public event EventHandler<CallEventArg> Answer;
-        public event EventHandler<CallEventArg> Drop;
+        public event EventHandler<CallEventArgs> OutgoingCall;
+        public event EventHandler<CallEventArgs> IncomingCall;
+        public event EventHandler<CallEventArgs> Answer;
+        public event EventHandler<CallEventArgs> Drop;
 
         public virtual void RegisterEventHandlersForPhone(IPhone phone)
         {
@@ -58,13 +58,24 @@ namespace ats
             };
         }
 
-        protected virtual void OnIncomingCall(object sender, CallEventArg arg)
+        protected virtual void OnIncomingCall(object sender, CallEventArgs arg)
         {
             IncomingCall?.Invoke(sender, arg);
         }
-        public void IncomingCallFromStation(CallEventArg arg)
+        public void IncomingCallFromStation(CallEventArgs arg)
         {
             OnIncomingCall(this, arg);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Port port &&
+                   state == port.state;
+        }
+
+        public override int GetHashCode()
+        {
+            return 259708774 + state.GetHashCode();
         }
     }
 }
